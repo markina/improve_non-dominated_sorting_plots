@@ -15,19 +15,17 @@ class T:
 
 
 N = 100000
-M = 20
+M = 10
 zoom = 1E4
 
 name = "cube"
 prefix = "_result.txt"
 
-# full_name = name + "_" + str(N) + "_" + str(M) + "_" + str(A) + prefix
 full_name = name + "_" + str(N) + "_" + str(M) + prefix
 
 al = []
 
 map_cnt = {}
-map_sum_fast = {}
 map_sum_bos = {}
 
 with open("experiments/" + full_name) as f:
@@ -38,18 +36,14 @@ with open("experiments/" + full_name) as f:
         al.append(T(n, m, k, (Tb - Tf) / max(Tf, Tb), Tf, Tb))
         if n in map_cnt:
             map_cnt[n] += 1
-            map_sum_fast[n] += Tf
             map_sum_bos[n] += Tb
         else:
             map_cnt[n] = 1
-            map_sum_fast[n] = Tf
             map_sum_bos[n] = Tb
 
-map_average_fast = {}
 map_average_bos = {}
 
 for (i, x) in map_cnt.items():
-    map_average_fast[i] = map_sum_fast[i] / x
     map_average_bos[i] = map_sum_bos[i] / x
 
 plt.title(name + " M = " + str(M) + " - time")
@@ -60,13 +54,9 @@ plt.semilogx(
     'ro', label='bos')
 
 plt.semilogx(
-    [i for i in map_average_fast.keys()],
-    [map_average_fast[i] for i in map_average_fast.keys()],
+    [i for i in map_average_bos.keys()],
+    [map_average_bos[i] for i in map_average_bos.keys()],
     'bo', label='average')
-
-
-
-# plt.semilogx([1], [1], 'k.')
 
 plt.axhline(0, color='black')
 
@@ -75,6 +65,6 @@ plt.ylabel('tb - average(tb)')
 plt.legend(loc=4)
 if zoom:
     plt.ylim(-zoom, zoom)
-# plt.ylim(-1, 1)
+
 plt.show()
 

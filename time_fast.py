@@ -21,14 +21,12 @@ zoom = 1E6
 name = "cube"
 prefix = "_result.txt"
 
-# full_name = name + "_" + str(N) + "_" + str(M) + "_" + str(A) + prefix
 full_name = name + "_" + str(N) + "_" + str(M) + prefix
 
 al = []
 
 map_cnt = {}
 map_sum_fast = {}
-map_sum_bos = {}
 
 with open("experiments/" + full_name) as f:
     for line in f:
@@ -39,18 +37,14 @@ with open("experiments/" + full_name) as f:
         if n in map_cnt:
             map_cnt[n] += 1
             map_sum_fast[n] += Tf
-            map_sum_bos[n] += Tb
         else:
             map_cnt[n] = 1
             map_sum_fast[n] = Tf
-            map_sum_bos[n] = Tb
 
 map_average_fast = {}
-map_average_bos = {}
 
 for (i, x) in map_cnt.items():
     map_average_fast[i] = map_sum_fast[i] / x
-    map_average_bos[i] = map_sum_bos[i] / x
 
 plt.title(name + " M = " + str(M) + " - time")
 
