@@ -16,7 +16,7 @@ class T:
 
 N = 100000
 M = 10
-zoom = 1E4
+zoom = 0  # 1E4
 
 name = "cube"
 prefix = "_result.txt"

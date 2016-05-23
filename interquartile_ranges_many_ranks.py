@@ -1,5 +1,5 @@
+import math
 from matplotlib import pyplot as plt
-from collections import namedtuple
 
 
 class T:
@@ -14,15 +14,14 @@ class T:
 
 
 N = 100000
-M = 3
+M = 6
 
 name = "cube"
 prefix = "_result.txt"
 
-# full_name = name + "_" + str(N) + "_" + str(M) + "_" + str(A) + prefix
 full_name = name + "_" + str(N) + "_" + str(M) + prefix
 
-al = []
+al = {}
 max_k = -1
 
 with open("experiments/" + full_name) as f:
@@ -31,9 +30,43 @@ with open("experiments/" + full_name) as f:
         max_k = max(max_k, k)
         Tf = float(next(f))
         Tb = float(next(f))
-        al.append(T(n, m, k, (Tb - Tf) / max(Tf, Tb)))
+        if n not in al:
+            al[n] = []
+        al[n].append(T(n, m, k, (Tb - Tf) / max(Tf, Tb)))
 
 print("Cnt ranks = " + str(max_k))
+
+lp = 0.25
+rp = 0.75
+
+al_new = {}
+for (n, ls) in al.items():
+    al_new[n] = sorted(ls, key=lambda e: e.t)
+
+####
+# xx = []
+# yy = []
+# l = -1
+# step = 0.1
+# r = l + step
+# while r <= 1:
+#     xx.append(l)
+#     yy.append(sum(1 for a in al_new[2] if l <= a.t <= r))
+#     l += step
+#     r += step
+#
+# plt.plot(xx, yy, "bo")
+# plt.show()
+# exit()
+# ####
+
+al = []
+for (n, ls) in al_new.items():
+    sz = len(ls)
+    left = int(sz * lp)
+    right = int(math.ceil(sz * rp))
+    al.extend(ls[left:right+1])
+
 
 plt.title(name + " M = " + str(M))
 
@@ -83,9 +116,4 @@ plt.ylabel('t')
 plt.legend(loc=4)
 plt.xlim(0, 110000)
 plt.ylim(-1, 1)
-# plt.savefig("ex.png")
-# plt.savefig('foo.png', bbox_inches='tight')
-
 plt.show()
-
-
