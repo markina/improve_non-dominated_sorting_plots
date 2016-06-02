@@ -1,183 +1,115 @@
 import math
-from matplotlib import pyplot as plt
+
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 
 
 class T:
-    def __init__(self, n, m, k, t):
+    def __init__(self, n, m, k, tf, tb, th):
         self.n = n
         self.m = m
         self.k = k
-        self.t = t
-
-    def __repr__(self):
-        return repr((self.n, self.m, self.k, self.t))
-
-
-N = 100000
-M = 30
-
-name = "1fronts"
-prefix = "_result.txt"
-
-full_name = name + "_" + str(N) + "_" + str(M) + prefix
-
-al_f = {}
-max_k = -1
-
-with open("experiments-3/" + full_name) as f:
-    for line in f:
-        n, m, k = [int(i) for i in line.split()]
-        max_k = max(max_k, k)
-        Tf = float(next(f))
-        Tb = float(next(f))
-        Th = float(next(f))
-        if n not in al_f:
-            al_f[n] = []
-        al_f[n].append(T(n, m, k, (Th - Tf) / max(Tf, Th)))
-
-print("Cnt ranks = " + str(max_k))
-
-lp = 0.25
-rp = 0.75
-
-al_new_f = {}
-for (n, ls) in al_f.items():
-    al_new_f[n] = sorted(ls, key=lambda e: e.t)
-
-al_f = []
-for (n, ls) in al_new_f.items():
-    sz = len(ls)
-    left = int(sz * lp)
-    right = int(math.ceil(sz * rp))
-    al_f.extend(ls[left:right + 1])
+        self.tf = tf
+        self.tb = tb
+        self.th = th
+        tm = min(tb, tf)
+        self.t_b_f = (tb - tf) / max(tf, tb)
+        self.t_h_m = (th - tm) / max(tm, th)
 
 
-plt.title(name + " M = " + str(M) + " " + str(lp * 100) + "%")
+def pl(N, M, name, percent):
 
-plt.semilogx([1], [1], 'k.')
+    # N = 100000
+    # M = 30
+    #
+    # name = "1fronts"
+    prefix = "_result.txt"
 
-# plt.semilogx(
-#     [a.n for a in al_f if a.m == M],
-#     [a.t for a in al_f if a.m == M],
-#     'ro', label='(Th-Tf)/max')
+    full_name = name + "_" + str(N) + "_" + str(M) + prefix
 
+    al = {}
+    max_k = -1
 
-############################################################
+    lp = percent
+    rp = 1 - percent
 
+    with open(IN_DIR + full_name) as f:
+        for line in f:
+            n, m, k = [int(i) for i in line.split()]
+            max_k = max(max_k, k)
+            Tf = float(next(f))
+            Tb = float(next(f))
+            Th = float(next(f))
+            if n not in al:
+                al[n] = []
+            al[n].append(T(n, m, k, Tf, Tb, Th))
 
-al_b = {}
-max_k = -1
+    print("Cnt ranks = " + str(max_k))
 
-with open("experiments-3/" + full_name) as f:
-    for line in f:
-        n, m, k = [int(i) for i in line.split()]
-        Tf = float(next(f))
-        Tb = float(next(f))
-        Th = float(next(f))
-        if n not in al_b:
-            al_b[n] = []
-        al_b[n].append(T(n, m, k, (Th - Tb) / max(Th, Tb)))
+    al_bf = []
+    al_hm = []
 
+    for (n, ls) in al.items():
+        bf = sorted(ls, key=lambda e: e.t_b_f)
+        sz = len(bf)
+        left = int(sz * lp)
+        right = int(math.ceil(sz * rp))
+        al_bf.extend(bf[left:right + 1])
 
-al_new_b = {}
-for (n, ls) in al_b.items():
-    al_new_b[n] = sorted(ls, key=lambda e: e.t)
+        hm = sorted(ls, key=lambda e: e.t_h_m)
+        sz = len(hm)
+        left = int(sz * lp)
+        right = int(math.ceil(sz * rp))
+        al_hm.extend(hm[left:right + 1])
 
-al_b = []
-for (n, ls) in al_new_b.items():
-    sz = len(ls)
-    left = int(sz * lp)
-    right = int(math.ceil(sz * rp))
-    al_b.extend(ls[left:right + 1])
+    plt.title(name + " M = " + str(M).zfill(2) + ", " + str(lp * 100) + "%")
+    name_result_file = DIR + name + "_m=" +  str(M).zfill(2) + ".png"
 
+    print(name_result_file)
 
-plt.title(name + " M = " + str(M) + " " + str(lp * 100) + "%")
+    plt.semilogx([1], [1], 'k.')
 
-plt.semilogx([1], [1], 'k.')
+    plt.semilogx(
+        [a.n for a in al_bf if a.m == M],
+        [a.t_b_f for a in al_bf if a.m == M],
+        'ro', label='(Tb-Tf)/max')
+
+    plt.semilogx(
+        [a.n for a in al_hm if a.m == M],
+        [a.t_h_m for a in al_hm if a.m == M],
+        'bo', label='(Th-Tm)/max')
+
+    plt.axhline(0, color='black')
+
+    plt.xlabel('N')
+    plt.ylabel('t')
+    plt.legend(loc=4)
+    plt.xlim(0, 110000)
+    plt.ylim(-1, 1)
+    # plt.grid()
+    # fig = plt.figure()
+    # fig.canvas.manager.window.attributes('-topmost', 1)
+    # After placing figure window on top, allow other windows to be on top of it later
+    # fig.canvas.manager.window.attributes('-topmost', 0)
+    plt.savefig(name_result_file, bbox_inches='tight')
+    plt.close()
+    # plt.show()
 #
-# plt.semilogx(
-#     [a.n for a in al_b if a.m == M],
-#     [a.t for a in al_b if a.m == M],
-#     'bo', label='(Th-Tb)/max')
 
-################################
+DIR = "plots/plot-3_new_test/"
+IN_DIR = "experiments-3/"
 
-al = {}
+for mi in range(3, 11):
+    if mi < 5:
+        pr = 0.40
+    else:
+        pr = 0.30
+    pl(100000, mi, "1fronts", pr)
+    # pl(100000, mi, "2fronts", pr)
+    pl(100000, mi, "cube", pr)
 
-with open("experiments-3/" + full_name) as f:
-    for line in f:
-        n, m, k = [int(i) for i in line.split()]
-        Tf = float(next(f))
-        Tb = float(next(f))
-        Th = float(next(f))
-        if n not in al:
-            al[n] = []
-        al[n].append(T(n, m, k, (Tb - Tf) / max(Tf, Tb)))
-
-al_new = {}
-for (n, ls) in al.items():
-    al_new[n] = sorted(ls, key=lambda e: e.t)
-
-al = []
-for (n, ls) in al_new.items():
-    sz = len(ls)
-    left = int(sz * lp)
-    right = int(math.ceil(sz * rp))
-    al.extend(ls[left:right + 1])
-
-
-plt.title(name + " M = " + str(M) + " " + str(lp * 100) + "%")
-
-plt.semilogx([1], [1], 'k.')
-
-plt.semilogx(
-    [a.n for a in al if a.m == M],
-    [a.t for a in al if a.m == M],
-    'ro', label='(Tb-Tf)/max')
-
-################################
-
-al_m = {}
-
-with open("experiments-3/" + full_name) as f:
-    for line in f:
-        n, m, k = [int(i) for i in line.split()]
-        Tf = float(next(f))
-        Tb = float(next(f))
-        Th = float(next(f))
-        Tm = min(Tb, Tf)
-        if n not in al_m:
-            al_m[n] = []
-        al_m[n].append(T(n, m, k, (Th - Tm) / max(Tm, Th)))
-
-al_new_m = {}
-for (n, ls) in al_m.items():
-    al_new_m[n] = sorted(ls, key=lambda e: e.t)
-
-al_m = []
-for (n, ls) in al_new_m.items():
-    sz = len(ls)
-    left = int(sz * lp)
-    right = int(math.ceil(sz * rp))
-    al_m.extend(ls[left:right + 1])
-
-
-plt.title(name + " M = " + str(M) + " " + str(lp * 100) + "%")
-
-plt.semilogx([1], [1], 'k.')
-
-plt.semilogx(
-    [a.n for a in al_m if a.m == M],
-    [a.t for a in al_m if a.m == M],
-    'go', label='(Th-Tm)/max')
-
-################################
-
-plt.axhline(0, color='black')
-
-plt.xlabel('N')
-plt.ylabel('t')
-plt.legend(loc=4)
-plt.xlim(0, 110000)
-plt.ylim(-1, 1)
-plt.show()
+for mi in range(10, 31, 5):
+    pl(100000, mi, "1fronts", 0.30)
+    # pl(100000, mi, "2fronts", 0.30)
+    pl(100000, mi, "cube", 0.30)
