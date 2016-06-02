@@ -14,9 +14,9 @@ class T:
 
 
 N = 100000
-M = 8
+M = 30
 
-name = "cube"
+name = "1fronts"
 prefix = "_result.txt"
 
 full_name = name + "_" + str(N) + "_" + str(M) + prefix
@@ -37,8 +37,8 @@ with open("experiments-3/" + full_name) as f:
 
 print("Cnt ranks = " + str(max_k))
 
-lp = 0.30
-rp = 0.70
+lp = 0.25
+rp = 0.75
 
 al_new_f = {}
 for (n, ls) in al_f.items():
@@ -59,7 +59,7 @@ plt.semilogx([1], [1], 'k.')
 # plt.semilogx(
 #     [a.n for a in al_f if a.m == M],
 #     [a.t for a in al_f if a.m == M],
-#     'ro', label='Th-Tf/max')
+#     'ro', label='(Th-Tf)/max')
 
 
 ############################################################
@@ -98,7 +98,7 @@ plt.semilogx([1], [1], 'k.')
 # plt.semilogx(
 #     [a.n for a in al_b if a.m == M],
 #     [a.t for a in al_b if a.m == M],
-#     'bo', label='Th-Tb/max')
+#     'bo', label='(Th-Tb)/max')
 
 ################################
 
@@ -133,11 +133,9 @@ plt.semilogx([1], [1], 'k.')
 plt.semilogx(
     [a.n for a in al if a.m == M],
     [a.t for a in al if a.m == M],
-    'ro', label='Tb-Tf/max')
+    'ro', label='(Tb-Tf)/max')
 
 ################################
-
-
 
 al_m = {}
 
@@ -171,7 +169,7 @@ plt.semilogx([1], [1], 'k.')
 plt.semilogx(
     [a.n for a in al_m if a.m == M],
     [a.t for a in al_m if a.m == M],
-    'go', label='Th-Tm/max')
+    'go', label='(Th-Tm)/max')
 
 ################################
 
