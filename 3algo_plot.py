@@ -105,11 +105,11 @@ for mi in range(3, 11):
         pr = 0.40
     else:
         pr = 0.30
-    pl(100000, mi, "1fronts", pr)
-    # pl(100000, mi, "2fronts", pr)
-    pl(100000, mi, "cube", pr)
+    # pl(100000, mi, "1fronts", pr)
+    pl(100000, mi, "2fronts", pr)
+    # pl(100000, mi, "cube", pr)
 
 for mi in range(10, 31, 5):
-    pl(100000, mi, "1fronts", 0.30)
-    # pl(100000, mi, "2fronts", 0.30)
-    pl(100000, mi, "cube", 0.30)
+    # pl(100000, mi, "1fronts", 0.30)
+    pl(100000, mi, "2fronts", 0.30)
+    # pl(100000, mi, "cube", 0.30)
