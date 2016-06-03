@@ -81,7 +81,7 @@ def pl(D, F, percent):
     # fig.canvas.manager.window.attributes('-topmost', 1)
     # After placing figure window on top, allow other windows to be on top of it later
     # fig.canvas.manager.window.attributes('-topmost', 0)
-    plt.savefig("DIR" + out_file_name, bbox_inches='tight')
+    plt.savefig(DIR + out_file_name, bbox_inches='tight')
     plt.close()
     # plt.show()
 #
@@ -90,11 +90,14 @@ DIR = "plots/plot-2.0/"
 IN_DIR = "experiments-2.0/"
 
 
-for fi in range(1, 21):
-    pl(3, fi, 0.3)
+# for fi in range(1, 21):
+#     pl(3, fi, 0.3)
+#
+# for fi in range(1, 21):
+#     pl(4, fi, 0.3)
 
-for fi in range(1, 21):
-    pl(4, fi, 0.3)
-
-for fi in range(1, 10):
+for fi in range(10, 21):
     pl(5, fi, 0.3)
+
+for fi in range(1, 19):
+    pl(6, fi, 0.3)
