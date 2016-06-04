@@ -96,8 +96,11 @@ IN_DIR = "experiments-2.0/"
 # for fi in range(1, 21):
 #     pl(4, fi, 0.3)
 
-for fi in range(10, 21):
-    pl(5, fi, 0.3)
-
-for fi in range(1, 19):
+for fi in range(19, 21):
     pl(6, fi, 0.3)
+
+for fi in range(1, 21):
+    pl(7, fi, 0.3)
+
+for fi in range(1, 11):
+    pl(8, fi, 0.3)
