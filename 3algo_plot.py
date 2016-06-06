@@ -93,10 +93,10 @@ def pl(D, F, percent):
     # plt.show()
 #
 
-DIR = "plots/final-plots/"
+DIR = "plots/final-plots_all_point/"
 IN_DIR = "experiments-2.2/"
 
-pr = 0.3
+pr = 0
 for fi in [1, 2, 3, 5, 10, 20]:
     pl(3, fi, pr)
     # pl(100000, mi, "cube", pr)
