@@ -98,7 +98,9 @@ IN_DIR = "experiments-2.2/"
 
 pr = 0
 for fi in [1, 2, 3, 5, 10, 20]:
-    pl(3, fi, pr)
+    pl(5, fi, pr)
+
+
     # pl(100000, mi, "cube", pr)
 #
 # for mi in range(10, 31, 5):
