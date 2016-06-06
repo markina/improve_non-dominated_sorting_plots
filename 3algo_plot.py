@@ -18,15 +18,9 @@ class T:
         self.t_h_m = (th - tm) / max(tm, th)
 
 
-def pl(N, M, name, percent):
+def pl(D, F, percent):
 
-    # N = 100000
-    # M = 30
-    #
-    # name = "1fronts"
-    prefix = "_result.txt"
-
-    full_name = name + "_" + str(N) + "_" + str(M) + prefix
+    full_name = "result-d-" + str(D).zfill(2) + "-f-" + str(F).zfill(2) + ".txt"
 
     al = {}
     max_k = -1
@@ -63,28 +57,30 @@ def pl(N, M, name, percent):
         right = int(math.ceil(sz * rp))
         al_hm.extend(hm[left:right + 1])
 
-    plt.title(name + " M = " + str(M).zfill(2) + ", " + str(lp * 100) + "%")
-    name_result_file = DIR + name + "_m=" +  str(M).zfill(2) + ".png"
+    print(full_name)
+    print(full_name[:-4])
+    plt.title(full_name[:-4] + ", " + str(lp * 100) + "%")
+    name_result_file = DIR + full_name[:-4] + ".png"
 
     print(name_result_file)
 
     plt.semilogx([1], [1], 'k.')
 
     plt.semilogx(
-        [a.n for a in al_bf if a.m == M],
-        [a.t_b_f for a in al_bf if a.m == M],
+        [a.n for a in al_bf],
+        [a.t_b_f for a in al_bf],
         'ro', label='(Tb-Tf)/max')
 
     plt.semilogx(
-        [a.n for a in al_hm if a.m == M],
-        [a.t_h_m for a in al_hm if a.m == M],
+        [a.n for a in al_hm],
+        [a.t_h_m for a in al_hm],
         'bo', label='(Th-Tm)/max')
 
     plt.axhline(0, color='black')
 
     plt.xlabel('N')
     plt.ylabel('t')
-    plt.legend(loc=4)
+    plt.legend(loc=3)
     plt.xlim(0, 110000)
     plt.ylim(-1, 1)
     # plt.grid()
@@ -97,19 +93,15 @@ def pl(N, M, name, percent):
     # plt.show()
 #
 
-DIR = "plots/plot-3_new_test/"
-IN_DIR = "experiments-3/"
+DIR = "plots/final-plots_all_point/"
+IN_DIR = "experiments-2.2/"
 
-for mi in range(3, 11):
-    if mi < 5:
-        pr = 0.40
-    else:
-        pr = 0.30
-    # pl(100000, mi, "1fronts", pr)
-    pl(100000, mi, "2fronts", pr)
+pr = 0
+for fi in [1, 2, 3, 5, 10, 20]:
+    pl(3, fi, pr)
     # pl(100000, mi, "cube", pr)
-
-for mi in range(10, 31, 5):
-    # pl(100000, mi, "1fronts", 0.30)
-    pl(100000, mi, "2fronts", 0.30)
-    # pl(100000, mi, "cube", 0.30)
+#
+# for mi in range(10, 31, 5):
+#     # pl(100000, mi, "1fronts", 0.30)
+#     pl(100000, mi, "2fronts", 0.30)
+#     # pl(100000, mi, "cube", 0.30)
