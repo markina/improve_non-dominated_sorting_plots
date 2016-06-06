@@ -28,11 +28,14 @@ def pl(D, F, percent):
     lp = percent
     rp = 1 - percent
 
+    max_k = -1
+
     with open(IN_DIR + full_name) as f:
         for line in f:
             n, m, k = [int(i) for i in line.split()]
             Tf = float(next(f))
             Tb = float(next(f))
+            max_k = max(max_k, k)
             if n not in al:
                 al[n] = []
             al[n].append(T(n, m, k, Tf, Tb))
@@ -56,6 +59,7 @@ def pl(D, F, percent):
     plt.title(" D = " + str(D).zfill(2) + ", F = " + str(F).zfill(2) + ", " + str(lp * 100) + "%")
 
     print(out_file_name)
+    print("Cnt ranks = " + str(max_k))
 
     plt.semilogx([1], [1], 'k.')
 
@@ -86,21 +90,13 @@ def pl(D, F, percent):
     # plt.show()
 #
 
-DIR = "plots/plot-2.0/"
+DIR = "plots/plot-delete/"
 IN_DIR = "experiments-2.0/"
 
-
-# for fi in range(1, 21):
-#     pl(3, fi, 0.3)
-#
-# for fi in range(1, 21):
-#     pl(4, fi, 0.3)
-
-for fi in range(19, 21):
-    pl(6, fi, 0.3)
-
-for fi in range(1, 21):
-    pl(7, fi, 0.3)
+for mi in range(3, 8):
+    for fi in range(1, 21):
+        pl(mi, fi, 0.3)
 
 for fi in range(1, 11):
     pl(8, fi, 0.3)
+
